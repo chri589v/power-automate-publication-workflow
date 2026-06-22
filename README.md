@@ -2,18 +2,18 @@
 
 This flow automates the creation of structured tasks in Microsoft Planner based on form input.
 
-## High-level Logic
+## High-Level Logic:
 
 1. A user submits a Microsoft Form
 2. The flow retrieves the response
 3. The data is formatted into a structured text block
 4. A Planner task is created using the formatted data
 
-## Flow Structure
+## Flow Structure:
 
 ![Flow structure](Structure.PNG)
 
-## The flow consists of:
+## The Flow Consists Of:
 
 1. When a new response is submitted (Forms)
 2. Get response details (Forms)
@@ -24,7 +24,6 @@ This flow automates the creation of structured tasks in Microsoft Planner based 
 ## Description Generation (Key Logic)
 
 The task description is generated using a single Compose action with a custom expression.
-This is the most important part of the flow.
 
 ### Why Use an Expression?
 
@@ -35,7 +34,7 @@ The Planner connector in Power Automate does not handle line breaks like standar
 - Reduces flow complexity
 - Works reliably with Planner and Teams
 
-## Use This Instead
+## Use This Instead:
 
 **Add** a modified version of the following code as an **expression** in the **inputs**-field of the compose block.
 
@@ -43,34 +42,34 @@ The Planner connector in Power Automate does not handle line breaks like standar
 trim(concat(
 
     if(
-      empty(trim(outputs('Get_response_details')?['body/<AUTHORS_FIELD_ID>'])),
+      empty(trim(outputs('Get_response_details')?['body/<A_FIELD_ID>'])),
       '',
       concat(
-        'Authors:',
+        'A:',
         decodeUriComponent('%0A'),
-        outputs('Get_response_details')?['body/<AUTHORS_FIELD_ID>'],
+        outputs('Get_response_details')?['body/<A_FIELD_ID>'],
         decodeUriComponent('%0A%0A')
       )
     ),
 
     if(
-      empty(trim(outputs('Get_response_details')?['body/<PAGE_COUNT_FIELD_ID>'])),
+      empty(trim(outputs('Get_response_details')?['body/<B_FIELD_ID>'])),
       '',
       concat(
-        'Page count:',
+        'B:',
         decodeUriComponent('%0A'),
-        outputs('Get_response_details')?['body/<PAGE_COUNT_FIELD_ID>'],
+        outputs('Get_response_details')?['body/<B_FIELD_ID>'],
         decodeUriComponent('%0A%0A')
       )
     ),
 
     if(
-      empty(trim(outputs('Get_response_details')?['body/<SUMMARY_FIELD_ID>'])),
+      empty(trim(outputs('Get_response_details')?['body/<C_FIELD_ID>'])),
       '',
       concat(
-        'Summary:',
+        'C:',
         decodeUriComponent('%0A'),
-        outputs('Get_response_details')?['body/<SUMMARY_FIELD_ID>'],
+        outputs('Get_response_details')?['body/<C_FIELD_ID>'],
         decodeUriComponent('%0A%0A')
       )
     )
@@ -80,18 +79,42 @@ trim(concat(
 
 ## How It Works
 
-### If a value exists:
+### If a Value Exists:
 
 - Add label
 - Add line break (%0A)
 - Add value
 - Add spacing (%0A%0A)
 
-### If the field is empty:
+### If the Field Is Empty:
 
 - Skip it completely
 
-## To adapt the flow:
+## Example Input
+
+This is an example of what the form response might contain:
+
+```text
+A: {value for A}
+B: {value for B}
+c: {value for C}
+```
+
+## Example Output
+
+This is how the generated Planner description will look:
+
+```text
+A:
+{value for A}
+
+B:
+{value for B}
+```
+
+Field C is skipped because it is empty.
+
+## To Adapt the Flow:
 
 - Replace <FIELD_ID> with your own Form field IDs
 - Add or remove sections as needed
