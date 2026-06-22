@@ -51,7 +51,7 @@ The Planner connector in Power Automate does **not** handle line breaks like sta
 
 ## Use This Instead
 
-´´´text
+```text
 trim(
   concat(
     if(
@@ -84,7 +84,10 @@ trim(
         decodeUriComponent('%0A'),
         outputs('Get_response_details')?['body/<SUMMARY_FIELD_ID>'],
         decodeUriComponent('%0A%0A')
-      ))))
-´´´
+      )
+    )
+  )
+)
+```
 
 ## How It Works
