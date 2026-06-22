@@ -52,8 +52,8 @@ The Planner connector in Power Automate does **not** handle line breaks like sta
 ## Use This Instead
 
 ```text
-trim(
-  concat(
+trim(concat(
+
     if(
       empty(trim(outputs('Get_response_details')?['body/<AUTHORS_FIELD_ID>'])),
       '',
@@ -86,8 +86,33 @@ trim(
         decodeUriComponent('%0A%0A')
       )
     )
-  )
-)
+
+))
 ```
 
+---
+
 ## How It Works
+
+### If a value exists:
+
+- Add label
+- Add line break (%0A)
+- Add value
+- Add spacing (%0A%0A)
+
+### If the field is empty:
+
+- Skip it completely
+
+---
+
+## Customization
+
+### To adapt the flow:
+
+- Replace <FIELD_ID> with your own Form field IDs
+- Add or remove sections as needed
+- Modify labels to fit your use case
+
+---
