@@ -1,55 +1,47 @@
-## Flow Explanation
+# Power Automate Task Workflow
 
 This flow automates the creation of structured tasks in Microsoft Planner based on form input.
 
----
+## High-level Logic
+
+1. A user submits a Microsoft Form
+2. The flow retrieves the response
+3. The data is formatted into a structured text block
+4. A Planner task is created using the formatted data
 
 ## Flow Structure
 
 ![Flow structure](Structure.PNG)
 
-The flow consists of:
+## The flow consists of:
 
-1. **When a new response is submitted**
-2. **Get response details**
+1. **When a new response is submitted (Forms)**
+2. **Get response details (Forms)**
 3. **Compose (description logic)**
-4. **Create a task**
-5. **Update task details**
-
----
-
-## High-level Logic
-
-1. A user submits a Microsoft Form  
-2. The flow retrieves the response  
-3. The data is formatted into a structured text block  
-4. A Planner task is created using the formatted data  
-
----
+4. **Create a task (Planner)**
+5. **Update task details (Planner)**
 
 ## Description Generation (Key Logic)
 
 The task description is generated using a **single Compose action with a custom expression**.  
 This is the most important part of the flow.
 
----
-
-## Why Use an Expression?
+### Why Use an Expression?
 
 Instead of using multiple conditions or Compose steps, this approach:
 
-- Produces consistent formatting  
-- Avoids unnecessary empty lines  
-- Reduces flow complexity  
-- Works reliably with Planner and Teams  
+- Produces consistent formatting
+- Avoids unnecessary empty lines
+- Reduces flow complexity
+- Works reliably with Planner and Teams
 
----
-
-## Important Limitation: Line Breaks
+#### Important Limitation: Line Breaks
 
 The Planner connector in Power Automate does **not** handle line breaks like standard text or HTML.
 
 ## Use This Instead
+
+Add a modified version of the following as an expression in the inputs-field of your compose block.
 
 ```text
 trim(concat(
@@ -90,8 +82,6 @@ trim(concat(
 ))
 ```
 
----
-
 ## How It Works
 
 ### If a value exists:
@@ -105,8 +95,6 @@ trim(concat(
 
 - Skip it completely
 
----
-
 ## Customization
 
 ### To adapt the flow:
@@ -114,5 +102,3 @@ trim(concat(
 - Replace <FIELD_ID> with your own Form field IDs
 - Add or remove sections as needed
 - Modify labels to fit your use case
-
----
