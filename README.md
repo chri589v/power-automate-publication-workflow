@@ -1,4 +1,3 @@
-
 ## Flow Explanation
 
 This flow automates the creation of structured tasks in Microsoft Planner based on form input.
@@ -53,6 +52,7 @@ The Planner connector in Power Automate does **not** handle line breaks like sta
 ## Use This Instead
 
 ´´´
+
 trim(
   concat(
     if(
