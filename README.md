@@ -1,89 +1,121 @@
-## Flow Explanation
+# Power Automate Task Workflow
+
 This flow automates the creation of structured tasks in Microsoft Planner based on form input.
 
-## High-level logic
+## High-Level Logic:
 
 1. A user submits a Microsoft Form
 2. The flow retrieves the response
 3. The data is formatted into a structured text block
 4. A Planner task is created using the formatted data
 
-## Description generation (key logic)
-The task description is generated using a **single Compose action with a custom expression**.
-This is the most important part of the flow.
+## Flow Structure:
 
-### Why use an expression?
+![Flow structure](Structure.PNG)
 
-Instead of using multiple conditions or Compose steps, this approach:
+## The Flow Consists Of:
+
+1. When a new response is submitted (Forms)
+2. Get response details (Forms)
+3. Compose (description logic)
+4. Create a task (Planner)
+5. Update task details (Planner)
+
+## Description Generation (Key Logic)
+
+The task description is generated using a single Compose action with a custom expression.
+
+### Why Use an Expression?
+
+The Planner connector in Power Automate does not handle line breaks like standard text or HTML. Instead of using multiple conditions or Compose steps, this approach:
 
 - Produces consistent formatting
 - Avoids unnecessary empty lines
 - Reduces flow complexity
 - Works reliably with Planner and Teams
 
-## Important limitation (line breaks)
-The Planner extension in Power Automate does not handle line breaks like standard text or HTML.
+## Use This Instead:
 
-You cannot use:
+**Add** a modified version of the following code as an **expression** in the **inputs**-field of the compose block.
 
-- \n
-- <br>
-
-Instead, line breaks must be created using:
-
-- Plain TextdecodeUriComponent('%0A')``Vis flere linjer
-
-### Example expression
-
-text'''
+```text
 trim(concat(
 
-if(empty(trim(outputs('Get_response_details')?['body/<AUTHORS_FIELD_ID>'])), '', concat('Authors:', decodeUriComponent('%0A'), outputs('Get_response_details')?['body/<AUTHORS_FIELD_ID>'], decodeUriComponent('%0A%0A'))),
+    if(
+      empty(trim(outputs('Get_response_details')?['body/<A_FIELD_ID>'])),
+      '',
+      concat(
+        'A:',
+        decodeUriComponent('%0A'),
+        outputs('Get_response_details')?['body/<A_FIELD_ID>'],
+        decodeUriComponent('%0A%0A')
+      )
+    ),
 
-if(empty(trim(outputs('Get_response_details')?['body/<PAGE_COUNT_FIELD_ID>'])), '', concat('Page count:', decodeUriComponent('%0A'), outputs('Get_response_details')?['body/<PAGE_COUNT_FIELD_ID>'], decodeUriComponent('%0A%0A'))),
+    if(
+      empty(trim(outputs('Get_response_details')?['body/<B_FIELD_ID>'])),
+      '',
+      concat(
+        'B:',
+        decodeUriComponent('%0A'),
+        outputs('Get_response_details')?['body/<B_FIELD_ID>'],
+        decodeUriComponent('%0A%0A')
+      )
+    ),
 
-if(empty(trim(outputs('Get_response_details')?['body/<SUMMARY_FIELD_ID>'])), '', concat('Summary:', decodeUriComponent('%0A'), outputs('Get_response_details')?['body/<SUMMARY_FIELD_ID>'], decodeUriComponent('%0A%0A')))
+    if(
+      empty(trim(outputs('Get_response_details')?['body/<C_FIELD_ID>'])),
+      '',
+      concat(
+        'C:',
+        decodeUriComponent('%0A'),
+        outputs('Get_response_details')?['body/<C_FIELD_ID>'],
+        decodeUriComponent('%0A%0A')
+      )
+    )
 
-))'''
+))
+```
 
-### How it works
+## How It Works
 
-For each field:
+### If a Value Exists:
 
-- If a value exists:
-  - Add label
-  - Add line break (%0A)
-  - Add value
-  - Add spacing (%0A%0A)
+- Add label
+- Add line break (%0A)
+- Add value
+- Add spacing (%0A%0A)
 
-- If the field is empty:
-  - Skip it
+### If the Field Is Empty:
 
-## Example output
-text'''
-Authors:
-John Doe
+- Skip it completely
 
-Page count:
-45
+## Example Input
 
-Summary:
-This publication analyzes...
-'''
+This is an example of what the form response might contain:
 
-### Why not use conditions?
-Using Conditions + multiple Compose steps leads to:
+```text
+A: {value for A}
+B: {value for B}
+c: {value for C}
+```
 
-- messy formatting
-- empty lines
-- harder-to-maintain flows
+## Example Output
 
-The expression-based approach avoids these issues and keeps the output clean.
+This is how the generated Planner description will look:
 
-## Customization
+```text
+A:
+{value for A}
 
-To adapt the flow:
+B:
+{value for B}
+```
 
-- Replace <FIELD_ID> with your own form fields
+Field C is skipped because it is empty.
+
+## To Adapt the Flow:
+
+- Replace <FIELD_ID> with your own Form field IDs
 - Add or remove sections as needed
 - Modify labels to fit your use case
