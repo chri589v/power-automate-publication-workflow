@@ -36,8 +36,6 @@ The Planner connector in Power Automate does not handle line breaks like standar
 
 ## Use This Instead:
 
-**Add** a modified version of the following code as an **expression** in the **inputs**-field of the compose block.
-
 ```text
 trim(concat(
 
@@ -76,6 +74,10 @@ trim(concat(
 
 ))
 ```
+
+**Add** a modified version of the following code as an **expression** in the **inputs**-field of the compose block:
+
+![Compose expression](Compose.PNG)
 
 ## How It Works
 
