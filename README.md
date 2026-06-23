@@ -21,7 +21,7 @@ This flow automates the creation of structured tasks in Microsoft Planner based 
 4. Create a task (Planner)
 5. Update task details (Planner)
 
-## Description Generation (Key Logic)
+## Description Generation
 
 The task description is generated using a single Compose action with a custom expression.
 
