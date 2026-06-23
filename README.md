@@ -34,7 +34,7 @@ The Planner connector in Power Automate does not handle line breaks like standar
 - Reduces flow complexity
 - Works reliably with Planner and Teams
 
-## Use This Instead:
+## Code:
 
 ```text
 trim(concat(
@@ -75,7 +75,7 @@ trim(concat(
 ))
 ```
 
-**Add** a modified version of the following code as an **expression** in the **inputs**-field of the compose block:
+**Add** a modified version of the code above as an **expression** in the **inputs**-field of the compose block:
 
 ![Compose expression](Compose.PNG)
 
@@ -121,5 +121,3 @@ Field C is skipped because it is empty.
 - Replace <FIELD_ID> with your own Form field IDs
 - Add or remove sections as needed
 - Modify labels to fit your use case
-
----
