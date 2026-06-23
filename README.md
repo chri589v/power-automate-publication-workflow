@@ -1,6 +1,6 @@
 # Power Automate Task Workflow
 
-This flow automates the creation of structured tasks in Microsoft Planner based on form input.
+This flow automates the creation of structured tasks in Microsoft Planner based on form input. This repository contains a generic example. No real data, systems, or environments are represented.
 
 ## High-Level Logic:
 
